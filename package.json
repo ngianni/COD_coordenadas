@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "css.escape": "^1.5.1",
+    "csv-parser": "^3.0.0",
+    "neat-csv": "^6.0.1",
+    "papaparse": "^5.3.1",
+    "puppeteer": "^10.4.0"
+  }
+}
