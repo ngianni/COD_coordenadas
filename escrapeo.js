@@ -8,8 +8,10 @@ const fnc = require("./functions");
 let scrape = async () => { 
 
     // carga lugares a buscar coordenadas
-    lugares = fnc.read_csv('direcciones.csv')
+    // lugares = fnc.read_csv('direccionesturismo.csv')
+    lugares = fnc.read_csv('OK_Google-My-Business-Sample-2021-11-02 - v5 (1).csv')
 
+    console.log(lugares)
     // carga navegador
     const browser = await puppeteer.launch({headless: false}); 
 
@@ -20,20 +22,24 @@ let scrape = async () => {
     await page.goto('https://www.google.com.ar/maps/preview'); 
 
     for ( let i = 0 ; i < lugares.length ; i++ ){
+        
+        // combino nombre, barrio y direccion para buscar
+        let lugar = ''
+        
+        // lugar = lugar + ((lugares[i].nombre    != '') ? (lugares[i].nombre)            : lugar)
+        // lugar = lugar + ((lugares[i].direccion != '') ? ( ', ' + lugares[i].direccion) : lugar)
 
-        // combino 
-        if ( lugares[i].nombre == '' ){
-            lugar = lugares[i].direccion
-        } else {
-            lugar = lugares[i].nombre
-        }
+        lugar = lugar + ((lugares[i].direccion != '') ? (lugares[i].direccion) : lugar)
+        lugar = lugar + ((lugares[i].barrio    != '') ? ( ', ' + lugares[i].barrio)    : lugar)
+        lugar = lugar + 'CABA'
+
         // borro casilla de busqueda
         await page.$eval('#searchboxinput', el => el.value = '');
         // busca lugar
         await page.type('#searchboxinput', lugar ) 
         await page.click('#searchbox-searchbutton');
         
-        await page.waitForTimeout(5000); 
+        await page.waitForTimeout(6000); 
 
         // latitud y longitud 
         coords = await fnc.getCoords ( page.url() )

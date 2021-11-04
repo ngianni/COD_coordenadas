@@ -6,10 +6,15 @@ function read_csv( file ) {
 
     let csv = fs.readFileSync( file ).toString();
 
+    console.log( csv )
+
     let results = papa.parse(csv, {
         header: true,
-        delimiter: ","
+        transformHeader: h => h.trim(),
+        delimiter: ";"
     });
+
+    console.log( results )
 
     return results.data
 }
